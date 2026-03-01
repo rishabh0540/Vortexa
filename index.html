@@ -190,7 +190,7 @@
         };
 
         const Hero = () => (
-            <section id="hero" className="min-h-screen flex flex-col items-start md:items-center justify-center mt-16 md:mt-6 px-6 md:px-6 text-left md:text-center mobile-left">
+            <section id="hero" className="min-h-screen flex flex-col items-start md:items-center justify-center mt-12 md:mt-6 px-6 md:px-6 text-left md:text-center mobile-left">
                 <motion.div 
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -221,7 +221,7 @@
         );
 
         const FomoGrid = () => (
-            <section id="fomo" className="py-24 px-6 border-t border-white/5 mobile-left">
+            <section id="fomo" className="py-24 px-12 border-t border-white/5 mobile-left">
                 <div className="max-w-7xl mx-auto">
                     <motion.div 
                         initial={{ opacity: 0, x: -20 }}
@@ -305,7 +305,7 @@
             const isComplete = answeredCount === questions.length;
 
             return (
-                <section id="ladder" className="py-32 px-6 bg-emerald-950/10 mobile-left">
+                <section id="ladder" className="py-24 px-6 bg-emerald-950/10 mobile-left">
                     <div className="max-w-4xl mx-auto w-full">
                         <motion.div 
                             initial={{ opacity: 0, x: -20 }}
@@ -428,7 +428,7 @@
         };
 
         const TeaseSolution = () => (
-            <section id="solution" className="py-32 px-6 mobile-left">
+            <section id="solution" className="py-24 px-12 mobile-left">
                 <div className="max-w-7xl mx-auto">
                     <motion.div 
                         initial={{ opacity: 0, x: -20 }}
@@ -492,7 +492,7 @@
         );
 
         const TrustGuarantee = () => (
-            <section id="work" className="py-32 px-6 bg-white/[0.01] mobile-left">
+            <section id="work" className="py-24 px-12 bg-white/[0.01] mobile-left">
                 <div className="max-w-7xl mx-auto">
                     <motion.div 
                         initial={{ opacity: 0, x: -20 }}
@@ -557,7 +557,7 @@
             const waLink = `https://wa.me/919810974035?text=Hi%20Vortexa,%20I'm%20a%20${encodeURIComponent(bizType || 'Business')}%20owner.%20Audit%20my%20visibility?`;
 
             return (
-                <section id="cta" className="py-32 px-6 mobile-left">
+                <section id="cta" className="py-24 px-6 mobile-left">
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
@@ -591,7 +591,7 @@
         };
 
         const Footer = () => (
-            <footer className="py-20 px-6 border-t border-white/5 bg-black/40 mobile-left">
+            <footer className="py-20 px-12 border-t border-white/5 bg-black/40 mobile-left">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
                     <div className="max-w-xs text-left">
                         <div className="text-xl font-display font-bold mb-4 tracking-tighter flex items-center">
