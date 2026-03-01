@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Vortexa | 2X Your Revenue</title>
+    <meta name="description" content="Vortexa builds elite, SEO-dominant digital assets for local leaders. Stop losing revenue to competitors.">
+    
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- React, Framer Motion, and Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deep: '#040d0a', 
+                        emerald: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'apple': '1.25rem',
+                        'samsung': '2.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #040d0a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 100% 100%, rgba(239, 68, 68, 0.05) 0%, transparent 45%),
+                #040d0a;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .text-gradient-red {
+            background: linear-gradient(135deg, #ffffff 0%, #ef4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-emerald {
+            background: linear-gradient(135deg, #ffffff 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.2); border-radius: 10px; }
+
+        section { position: relative; z-index: 10; }
+
+        @media (max-width: 768px) {
+            .mobile-left { text-align: left !important; align-items: flex-start !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        const getMotion = () => {
+            const lib = window.Motion || window.framerMotion || {};
+            if (lib.motion) return lib.motion;
+            return new Proxy({}, {
+                get: (target, prop) => (props) => React.createElement(prop, props)
+            });
+        };
+        const motion = getMotion();
+        const AnimatePresence = (window.Motion || window.framerMotion || {}).AnimatePresence || (({children}) => <>{children}</>);
+
+        const Nav = () => {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+            const navLinks = [
+                { name: "Invisibility Tax", href: "#fomo" },
+                { name: "Free Audit", href: "#ladder" },
+                { name: "Offerings", href: "#solution" },
+                { name: "Success Stories", href: "#work" }
+            ];
+
+            return (
+                <motion.header 
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="fixed top-0 left-0 w-full z-50 px-4 md:px-6 py-4 md:py-6"
+                >
+                    <div className="max-w-6xl mx-auto flex items-center justify-between glass-card rounded-apple px-4 md:px-8 py-3 border-white/5 relative z-50">
+                        {/* Logo */}
+                        <a href="#hero">
+                            <div className="flex items-center space-x-3 group">
+                                <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                                    <span className="text-white font-black text-lg">V</span>
+                                </div>
+                                <span className="font-display font-bold text-lg tracking-tight uppercase">Vortexa</span>
+                            </div>
+                        </a>
+
+                        {/* Desktop Links */}
+                        <div className="hidden md:flex space-x-8 text-[11px] font-bold uppercase tracking-[0.2em] text-white/40">
+                            {navLinks.map((link) => (
+                                <a key={link.name} href={link.href} className="hover:text-emerald-400 transition-colors">
+                                    {link.name}
+                                </a>
+                            ))}
+                        </div>
+
+                        {/* Audit Button & Hamburger */}
+                        <div className="flex items-center space-x-4">
+                            <a href="#ladder" className="bg-white text-black px-4 py-2 rounded-2xl text-[10px] md:text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all shadow-xl">
+                                Begin Free Audit
+                            </a>
+                            <button 
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                className="md:hidden w-8 h-8 flex items-center justify-center glass-card rounded-lg border-white/10"
+                            >
+                                {isMenuOpen ? (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                ) : (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Mobile Menu Overlay */}
+                    <AnimatePresence>
+                        {isMenuOpen && (
+                            <motion.div 
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="md:hidden glass-card rounded-2xl mt-4 p-6 border-white/5 overflow-hidden"
+                            >
+                                <div className="flex flex-col space-y-6">
+                                    {navLinks.map((link) => (
+                                        <a 
+                                            key={link.name} 
+                                            href={link.href} 
+                                            onClick={() => setIsMenuOpen(false)}
+                                            className="text-sm font-bold uppercase tracking-widest text-white/60 hover:text-emerald-400 border-b border-white/5 pb-2"
+                                        >
+                                            {link.name}
+                                        </a>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.header>
+            );
+        };
+
+        const Hero = () => (
+            <section id="hero" className="min-h-screen flex flex-col items-start md:items-center justify-center mt-24 md:mt-6 px-6 md:px-6 text-left md:text-center mobile-left">
+                <motion.div 
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.3 }}
+                    transition={{ duration: 0.8 }}
+                    className="max-w-4xl w-full"
+                >
+                    <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-red-500/5 border border-red-500/10 mb-8">
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-red-400">RIGHT NOW, CUSTOMERS ARE SEARCHING FOR YOUR SERVICE & CALLING YOUR COMPETITORS</span>
+                    </div>
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold leading-[1.1] tracking-tight mb-6">
+                        Frustrated With No Customers? <br className="hidden md:block"/> <span className="text-gradient-red">Your Competitor Just Stole 3 More.</span>
+                    </h1>
+                    <p className="max-w-2xl md:mx-auto text-base md:text-lg text-slate-400 font-medium mb-12 leading-relaxed">
+                        Every day your digital competitors gets clients that should be yours. We build revenue-driving websites for local businesses that rank #1 on Google & send inquiries directly to your WhatsApp - guaranteed.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-start md:justify-center">
+                        <a href="#cta" className="bg-emerald-500 px-10 py-4 rounded-apple text-sm font-bold shadow-[0_10px_30px_rgba(16,185,129,0.2)] hover:scale-105 transition-all text-center">
+                            Stop Losing Customers
+                        </a>
+                        <a href="#fomo" className="glass-card px-10 py-4 rounded-apple text-sm font-bold hover:bg-white/5 transition-all text-center">
+                            See What You're Losing
+                        </a>
+                    </div>
+                </motion.div>
+            </section>
+        );
+
+        const FomoGrid = () => (
+            <section id="fomo" className="py-32 px-6 border-t border-white/5 mobile-left">
+                <div className="max-w-7xl mx-auto">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: false }}
+                        className="text-left md:text-center mb-20"
+                    >
+                        <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 uppercase tracking-tight text-white">The Cost of <span className="text-red-500 italic underline decoration-red-500/20 underline-offset-8">Invisibility</span></h2>
+                        <p className="text-slate-500 font-medium mt-4">Every hour you are losing revenue by staying invisible online.</p>
+                    </motion.div>
+                    <div className="flex flex-col md:grid md:grid-cols-4 gap-4">
+                        {[
+                            { stat: "75%", label: "Discovery Loss", desc: "88% of customers search online before visiting any local business. Not on Google? You lost them.", src:"Source: Google Consumer Insights, 2023" },
+                            { stat: "15-35%", label: "Revenue Loss", desc: "By the average invisible local business to competitors who simply show up on Google.", src:"Source: Based on industry data from 2023." },
+                            { stat: "95%", label: "Market Erasure", desc: "95% of searchers never scroll past the top 3 results. Not there? You are invisible.", src:"Source: Backlinko Search Data, 2023" },
+                            { stat: "76%", label: "Missed Clients", desc: "76% of people who search for a local service on their phone visit or contact them within 24 hours.", src:"Source: Google Mobile Search Behavior Report" }
+                        ].map((item, i) => (
+                            <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: false }}
+                                transition={{ delay: i * 0.1 }}
+                                key={i} 
+                                className="h-full flex-grow flex-col glass-card p-6 md:p-10 rounded-apple text-left md:text-center border-red-500/5 hover:border-red-500/30 flex flex-row md:flex-col items-center md:items-center space-x-6 md:space-x-0"
+                            >
+                                <div className="text-3xl md:text-4xl font-display font-black text-red-500 md:mb-2">{item.stat}</div>
+                                <div className="flex-1 flex-grow md:flex-none text-left md:text-center">
+                                    <div className="text-[10px] font-black tracking-[0.2em] text-red-400/60 md:mb-4 uppercase">{item.label}</div>
+                                    <p className="hidden md:block text-xs text-slate-500 leading-relaxed font-medium">{item.desc}</p>
+                                    <p className="hidden md:block text-xs text-slate-500 leading-relaxed font-medium mt-4">{item.src}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const ConvictionAssessment = () => {
+            const [answers, setAnswers] = useState({});
+
+            const questions = [
+                {
+                    q: 'When someone in your city Googles "[your service] near me" right now — does your business appear in the top 3 results?',
+                    btnYes: "Yes",
+                    btnNo: "No",
+                    noText: "You are invisible to the highest-intent buyers in your market. These are people with their wallet already out."
+                },
+                {
+                    q: "In the last 30 days, did more than 10 new customers find you specifically through Google search?",
+                    btnYes: "Yes",
+                    btnNo: "No (< 10)",
+                    noText: "Your competitors are capturing this demand. It's going to them, not you."
+                },
+                {
+                    q: "When a potential customer visits your current website on their phone, does it load in under 3 seconds and make it obvious how to contact you?",
+                    btnYes: "Yes",
+                    btnNo: "No",
+                    noText: "53% of mobile visitors leave a site that takes over 3 seconds to load. You're paying for traffic that bounces before it converts."
+                },
+                {
+                    q: "Do you currently receive WhatsApp inquiries from people who found you online — without you running paid ads?",
+                    btnYes: "Yes",
+                    btnNo: "No",
+                    noText: "You have no organic lead pipeline. You are 100% dependent on word-of-mouth or paid spend. That's a fragile business."
+                },
+                {
+                    q: "If your top 2 competitors vanished tomorrow, would new customers still find you online?",
+                    btnYes: "Yes",
+                    btnNo: "Not Confident",
+                    noText: "Your online presence isn't strong enough to stand on its own. You're surviving on referrals, not systems."
+                }
+            ];
+
+            const handleAnswer = (index, value) => {
+                setAnswers(prev => ({ ...prev, [index]: value }));
+            };
+
+            const answeredCount = Object.keys(answers).length;
+            const score = Object.values(answers).filter(val => val === 'yes').length;
+            const isComplete = answeredCount === questions.length;
+
+            return (
+                <section id="ladder" className="py-32 px-6 bg-emerald-950/10 mobile-left">
+                    <div className="max-w-4xl mx-auto w-full">
+                        <motion.div 
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: false }}
+                            className="text-left md:text-center mb-16"
+                        >
+                            <h2 className="text-sm font-bold text-emerald-500 uppercase tracking-[0.4em] mb-4">Begin Free Audit</h2>
+                            <h3 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-white mb-4">Be Honest With Yourself For 60 Seconds.</h3>
+                            <p className="text-slate-400 font-medium">Answer these questions. Your score will tell you exactly how behind you are in your digital presence.</p>
+                        </motion.div>
+
+                        <div className="space-y-6">
+                            {questions.map((item, i) => (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: false }}
+                                    transition={{ delay: i * 0.1 }}
+                                    key={i} 
+                                    className="glass-card p-6 md:p-8 rounded-2xl border-white/5 flex flex-col space-y-4"
+                                >
+                                    <div className="flex items-start space-x-4">
+                                        <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0 text-emerald-500 font-bold text-sm">
+                                            Q{i+1}
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="text-lg font-bold text-white leading-relaxed">{item.q}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex space-x-4 pl-12">
+                                        <button 
+                                            onClick={() => handleAnswer(i, 'yes')}
+                                            className={`px-6 py-2 rounded-lg font-bold text-sm transition-all ${answers[i] === 'yes' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30' : 'bg-white/5 text-slate-400 hover:bg-white/10'}`}
+                                        >
+                                            {item.btnYes}
+                                        </button>
+                                        <button 
+                                            onClick={() => handleAnswer(i, 'no')}
+                                            className={`px-6 py-2 rounded-lg font-bold text-sm transition-all ${answers[i] === 'no' ? 'bg-red-500/20 text-red-400 border border-red-500/50' : 'bg-white/5 text-slate-400 hover:bg-white/10 border border-transparent'}`}
+                                        >
+                                            {item.btnNo}
+                                        </button>
+                                    </div>
+
+                                    <AnimatePresence>
+                                        {answers[i] === 'no' && (
+                                            <motion.div
+                                                initial={{ opacity: 0, height: 0 }}
+                                                animate={{ opacity: 1, height: 'auto' }}
+                                                exit={{ opacity: 0, height: 0 }}
+                                                className="overflow-hidden"
+                                            >
+                                                <div className="mt-4 pl-12">
+                                                    <div className="p-4 bg-red-500/10 border-l-2 border-red-500 rounded-r-lg">
+                                                        <p className="text-sm text-red-300 font-medium leading-relaxed">
+                                                            <span className="font-bold">Reality:</span> {item.noText}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* Result Box */}
+                        <AnimatePresence>
+                            {isComplete ? (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className={`mt-12 p-8 md:p-12 rounded-samsung border ${
+                                        score <= 1 ? 'bg-red-500/10 border-red-500/30 shadow-[0_0_40px_rgba(239,68,68,0.1)]' : 
+                                        score <= 3 ? 'bg-yellow-500/10 border-yellow-500/30 shadow-[0_0_40px_rgba(234,179,8,0.1)]' : 
+                                        'bg-emerald-500/10 border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.1)]'
+                                    }`}
+                                >
+                                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-slate-400">Diagnostic Result</h4>
+                                    <div className="flex items-center space-x-4 mb-6">
+                                        <span className={`text-5xl font-display font-black ${
+                                            score <= 1 ? 'text-red-500' : score <= 3 ? 'text-yellow-500' : 'text-emerald-500'
+                                        }`}>
+                                            {score}/5
+                                        </span>
+                                        <span className="text-xl font-bold text-white">System Integrity Score</span>
+                                    </div>
+                                    <p className="text-base md:text-lg text-slate-300 leading-relaxed font-medium">
+                                        {score <= 1 && "Your business is critically invisible. Competitors are actively feeding on your market share right now. This needs to be fixed this month, not next quarter."}
+                                        {score > 1 && score <= 3 && "You have partial visibility but significant gaps. You're getting some leads but leaving the majority on the table. A structured fix could 3X your current inbound."}
+                                        {score >= 4 && "You're already ahead of most local businesses. Vortexa can help you dominate your territory completely and lock competitors out permanently."}
+                                    </p>
+                                    
+                                    <div className="mt-8 pt-6 border-t border-white/10">
+                                        <a href="#cta" className={`inline-flex items-center px-8 py-4 rounded-apple font-bold text-sm transition-all ${
+                                            score <= 1 ? 'bg-red-500 hover:bg-red-600 text-white' : 
+                                            score <= 3 ? 'bg-yellow-500 hover:bg-yellow-600 text-black' : 
+                                            'bg-emerald-500 hover:bg-emerald-600 text-white'
+                                        }`}>
+                                            Fix The Leaks Now
+                                        </a>
+                                    </div>
+                                </motion.div>
+                            ) : (
+                                <motion.div 
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="mt-12 text-center p-8 border border-dashed border-white/10 rounded-2xl text-slate-500 font-medium"
+                                >
+                                    Answer all 5 questions to generate your visibility diagnostic report.
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                    </div>
+                </section>
+            );
+        };
+
+        const TeaseSolution = () => (
+            <section id="solution" className="py-32 px-6 mobile-left">
+                <div className="max-w-7xl mx-auto">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: false }}
+                        className="mb-20 text-left md:text-center"
+                    >
+                        <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 uppercase tracking-tight">The <span className="text-emerald-500 italic">Vortexa</span> Offering</h2>
+                        <p className="text-slate-500 font-medium">One System. Three Weapons. Complete Online Domination.</p>
+                    </motion.div>
+                    
+                    <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6 mb-20">
+                        {[
+                            { title: "SEO Architecture", benefit: "Rank #No.1 in Google Search every time a customer near you searches for your service." },
+                            { title: "WhatsApp Direct", benefit: "Turn customer curiosity into a WhatsApp conversion in just one click." },
+                            { title: "Lead Automation", benefit: "Automate lead capture, follow-ups & bookings to turn inquiries into revenue on autopilot." }
+                        ].map((item, i) => (
+                            <motion.div 
+                                initial={{ opacity: 0, y: 10 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: false }}
+                                transition={{ delay: i * 0.05 }}
+                                key={i} 
+                                className="glass-card p-6 md:p-10 rounded-apple flex flex-col md:flex-col items-start md:items-start text-left border-emerald-500/10 hover:border-emerald-500/40"
+                            >
+                                <div className="hidden md:flex w-10 h-10 bg-emerald-500/10 rounded-lg items-center justify-center mb-6">
+                                    <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <h4 className="text-lg font-bold mb-2 text-white">{item.title}</h4>
+                                <p className="text-xs md:text-sm text-slate-500 font-medium leading-relaxed">{item.benefit}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    <motion.div 
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: false }}
+                        className="mb-20 text-left md:text-center"
+                    >
+                        <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 uppercase tracking-tight">Best <span className="text-emerald-500 italic">Suited </span> For</h2>
+                    </motion.div>
+
+                    <div className="flex flex-col md:grid md:grid-cols-3 gap-4">
+                        {[
+                            { niche: "Medical Clinics", impact: "Automate Appointments." },
+                            { niche: "Law Firms", impact: "Showcase Expertise." },
+                            { niche: "Consumer Services", impact: "Book Service Slots." },
+                            { niche: "Retail Boutiques", impact: "Take Orders Online." },
+                            { niche: "Small Restaurants", impact: "Save Zomato Commissions" },
+                            { niche: "B2B Businesses", impact: "Generate Leads." }
+                        ].map((niche, i) => (
+                            <div key={i} className="glass-card px-6 py-4 rounded-xl flex justify-between items-center border-white/5">
+                                <span className="font-bold text-slate-300">{niche.niche}</span>
+                                <span className="text-[10px] font-black text-right uppercase text-emerald-500 tracking-widest">{niche.impact}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const TrustGuarantee = () => (
+            <section id="work" className="py-32 px-6 bg-white/[0.01] mobile-left">
+                <div className="max-w-7xl mx-auto">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: false }}
+                        className="text-left md:text-center mb-20"
+                    >
+                        <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 uppercase tracking-tight text-white">Trust & <span className="text-emerald-500">Success Stories</span></h2>
+                    </motion.div>
+                    
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 mb-32">
+                        {[
+                            { title: "SGF | Spice Grill Flame", img:"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=800", url:"https://rishabh0540.github.io/Saarrthi/sgfshaktinagar.html", tag: "₹36K Monthly Profit Increase", text: "Recovered our investment in just 11 days from commission savings alone." },
+                            { title: "ZipShine Clean Services", img:"https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800", url:"https://rishabh0540.github.io/Saarrthi/zipclean.html", tag: "+120% Bookings", text: "No inquiries are missed. All leads are captured & converted." },
+                            { title: "Verdant Home Decors", img:"https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800", url:"https://rishabh0540.github.io/Saarrthi/interior-leadgen.html", tag: "+75% Customer Calls", text: "Getting 20+ customer calls from website alone every month" },
+                            { title: "Q3 Fitness Gym & SPA", img:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800", url:"https://rishabh0540.github.io/Saarrthi/Q3Gym.html", tag: "3.5x Inquiry Growth", text: "A website makes us look professional, & people love us more." }
+                        ].map((item, i) => (
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.98 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: false }}
+                                key={i} 
+                                className="glass-card rounded-apple md:rounded-samsung overflow-hidden group h-full flex flex-col"
+                            >
+                                <div className="aspect-[16/10] relative overflow-hidden">
+                                        <img src={item.img} className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" alt={item.title}/>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                                    </div>
+                                <div className="flex flex-col flex-grow p-6 md:p-10 text-left bg-black/20">
+                                    <h3 className="text-xl md:text-2xl font-bold mb-1">{item.title}</h3>
+                                    <p className="text-emerald-500 font-bold uppercase tracking-widest text-[10px] mb-4">{item.tag}</p>
+                                    <p className="text-sm text-slate-500 mb-8 leading-relaxed italic">"{item.text}"</p>
+                                    <div className="flex flex-wrap gap-3 mt-auto">
+                                        <a href={item.url} target="_blank" className="items-center text-xs font-bold bg-emerald-500 px-6 py-3 rounded-apple hover:scale-105 transition-all">
+                                        View Case Study </a>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: false }}
+                        className="max-w-4xl mx-auto p-8 md:p-16 rounded-apple md:rounded-samsung bg-gradient-to-br from-emerald-600 to-emerald-950 shadow-[0_30px_60px_rgba(16,185,129,0.3)] text-left md:text-center relative border border-white/10"
+                    >
+                        <h3 className="text-2xl md:text-4xl font-display font-black text-white uppercase mb-6 leading-tight text-left md:text-center">The Grand Slam <br className="hidden md:block"/> 90-Day Result Guarantee</h3>
+                        <p className="text-base md:text-xl text-emerald-100 mb-10 font-medium opacity-90 leading-relaxed text-left md:text-center">
+                            If you do not get any WhatsApp inquiries within 90 days from the website,<br/><span className="text-white font-black underline decoration-white/30">we'll return 100% of your investment.</span> No questions asked.<br/>We take the risk. You keep the profit.
+                        </p>
+                        <div className="flex md:inline-flex items-center justify-center px-8 py-3 bg-black/30 rounded-full border border-white/20 text-white font-bold text-sm md:text-base tracking-widest uppercase shadow-2xl">
+                            100% Risk Free. Results Guaranteed.
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+        );
+
+        const CtaFunnel = () => {
+            const [bizType, setBizType] = useState('');
+            const waLink = `https://wa.me/919810974035?text=Hi%20Vortexa,%20I'm%20a%20${encodeURIComponent(bizType || 'Business')}%20owner.%20Audit%20my%20visibility?`;
+
+            return (
+                <section id="cta" className="py-32 px-6 mobile-left">
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: false }}
+                        className="max-w-5xl mx-auto glass-card rounded-apple md:rounded-samsung p-8 md:p-24 text-left md:text-center border-emerald-500/10"
+                    >
+                        <h2 className="text-3xl md:text-6xl font-display font-bold mb-8 text-white uppercase tracking-tight">End the Loss. <br/><span className="text-emerald-500 underline decoration-2 underline-offset-8">Start Dominating.</span></h2>
+                        <p className="text-slate-400 mb-12 text-sm md:text-lg max-w-xl mx-auto font-medium">We partner with only one business per service category per territory. Once it's done - it's closed. Permanently.</p>
+                        
+                        <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
+                            <input 
+                                type="text" 
+                                placeholder="Business Type (e.g. Clinic, Salon)"
+                                className="flex-1 bg-white/5 border border-white/10 px-6 md:px-8 py-4 md:py-5 rounded-apple font-bold text-base md:text-lg outline-none focus:border-emerald-500 transition-colors text-white placeholder-slate-700"
+                                value={bizType}
+                                onChange={(e) => setBizType(e.target.value)}
+                            />
+                            <a 
+                                href={waLink}
+                                target="_blank"
+                                className="bg-white text-black px-10 py-4 md:py-5 rounded-apple font-bold text-base md:text-lg hover:bg-emerald-500 hover:text-white transition-all transform active:scale-95 shadow-2xl flex items-center justify-center text-center"
+                            >
+                                Get Free Audit
+                            </a>
+                        </div>
+                        <p className="mt-8 text-[10px] font-bold text-slate-700 uppercase tracking-[0.4em] text-center">No sales pressure. Just one conversation to see if we're the right fit.</p>
+                    </motion.div>
+                </section>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="py-20 px-6 border-t border-white/5 bg-black/40 mobile-left">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+                    <div className="max-w-xs text-left">
+                        <div className="text-xl font-display font-bold mb-4 tracking-tighter flex items-center">
+                             <div className="w-7 h-7 bg-emerald-500 rounded-lg mr-3 flex items-center justify-center text-xs">V</div>
+                             Vortexa Systems
+                        </div>
+                        <p className="text-slate-600 text-xs leading-relaxed font-medium">Built for local businesses that refuse to be invisible.</p>
+                    </div>
+                    <div className="flex space-x-12 text-left md:text-right w-full md:w-auto">
+                        <div className="space-y-4">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500 block">Direct Access</span>
+                            <div className="flex flex-col space-y-3 text-xs font-bold text-slate-400">
+                                <a href="https://wa.me/919810974035" className="hover:text-emerald-400">Get Free Consultation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 text-left md:text-center">
+                    <span className="text-[10px] font-bold text-white/5 uppercase tracking-[0.4em]">Vortexa Systems © 2025 • Results Guaranteed</span>
+                </div>
+            </footer>
+        );
+
+        const App = () => (
+            <div className="antialiased selection:bg-emerald-500/30">
+                <Nav />
+                <main>
+                    <Hero />
+                    <FomoGrid />
+                    <ConvictionAssessment />
+                    <TeaseSolution />
+                    <TrustGuarantee />
+                    <CtaFunnel />
+                </main>
+                <Footer />
+            </div>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
